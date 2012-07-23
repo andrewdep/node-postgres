@@ -9,9 +9,9 @@ test('aborted transaction returned to pool', function() {
     client.id = 1;
     client.pauseDrain();
     client.query('begin;', assert.success(function() {
-      // client.query('rollback;'); // <-- This causes the test to pass.
       client.query('select * from thistableshouldneverexist', function(err) {
         assert.ok(err);
+        // client.query('rollback;'); // <-- This causes the test to pass.
         client.resumeDrain();
         helper.pg.connect(helper.config, assert.success(function(client) {
           assert.equal(client.id, 1);
